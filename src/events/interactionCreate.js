@@ -10,6 +10,9 @@ import { createInteractionTraceContext, runWithTraceContext } from '../utils/tra
 import { validateChatInputPayloadOrThrow } from '../utils/commandInputValidation.js';
 import { enforceAbuseProtection, formatCooldownDuration } from '../utils/abuseProtection.js';
 
+const ALLOWED_ROLE_ID = '1510023357607973065';
+
+
 function withTraceContext(context = {}, traceContext = {}) {
   return {
     traceId: traceContext.traceId,
@@ -45,9 +48,17 @@ export default {
               type: 'command_input_validation',
               commandName: interaction.commandName
             }, interactionTraceContext));
-
             const command = client.commands.get(interaction.commandName);
-
+            if (
+  interaction.guild &&
+  !interaction.member.permissions.has('Administrator') &&
+  !interaction.member.roles.cache.has(ALLOWED_ROLE_ID)
+) {
+  return interaction.reply({
+    content: '❌ You do not have permission to use this bot.',
+    ephemeral: true
+  });
+}
             if (!command) {
               throw createError(
                 `No command matching ${interaction.commandName} was found.`,
