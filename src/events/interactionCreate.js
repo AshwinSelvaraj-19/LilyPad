@@ -10,7 +10,7 @@ import { createInteractionTraceContext, runWithTraceContext } from '../utils/tra
 import { validateChatInputPayloadOrThrow } from '../utils/commandInputValidation.js';
 import { enforceAbuseProtection, formatCooldownDuration } from '../utils/abuseProtection.js';
 
-const ALLOWED_ROLE_ID = '1510023357607973065';
+const ALLOWED_ROLE_ID = '1514910498074660884';
 
 
 function withTraceContext(context = {}, traceContext = {}) {
