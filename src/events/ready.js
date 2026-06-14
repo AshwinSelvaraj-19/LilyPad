@@ -64,7 +64,9 @@ client.user.setPresence(config.bot.presence);
             );
 
             startupLog("Voice reconnect successful");
-          } catch {
+          } catch (error) {
+            logger.error("Voice reconnect failed:", error);
+
             startupLog("Voice disconnected, reconnecting...");
 
             connection.destroy();
@@ -105,15 +107,7 @@ client.user.setPresence(config.bot.presence);
     `Reaction role reconciliation: scanned ${reconciliationSummary.scannedMessages}, removed ${reconciliationSummary.removedMessages}, errors ${reconciliationSummary.errors}`
   );
 } catch (error) {
-  logger.error("Voice reconnect failed:", error);
-
-  startupLog("Voice disconnected, reconnecting...");
-
-  connection.destroy();
-
-  setTimeout(() => {
-    connectToVoice();
-  }, 5000);
+  logger.error("Error in ready event:", error);
 }
 
 
